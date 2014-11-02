@@ -228,6 +228,20 @@ namespace _2DParticelEngine
                 textureIndex--;
         }
 
+        // Increas particle generation per second
+        public void ParticlesPerSecondUp()
+        {
+            if(particlesPerFrame < 150)
+                particlesPerFrame++;
+        }
+
+        // Decrease particle geneartion per second
+        public void ParticlesPerSecondDown()
+        {
+            if(particlesPerFrame > 0)
+                particlesPerFrame--;
+        }
+
         // Next particle system
         public void ParticleManagerUp()
         {
@@ -236,21 +250,6 @@ namespace _2DParticelEngine
 
             SetParticleManagerState();
         }
-
-        // Increas particle generation per second
-        public void ParticlesPerSecondUp()
-        {
-            if(particlesPerFrame < 150)
-                particlesPerFrame++;
-        }
-
-        public void ParticlesPerSecondDown()
-        {
-            if(particlesPerFrame > 0)
-                particlesPerFrame--;
-        }
-
-        // Decrease particle geneartion per second
 
         // Last particle system
         public void ParticleManagerDown()
