@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></meta
+		<link rel='stylesheet' type='text/css' href='http://www.x3dom.org/x3dom/release/x3dom.css'></link>
+		<script type='text/javascript' src='http://www.x3dom.org/x3dom/release/x3dom.js'></script>
+	</head>
+	<body>
+		<x3d id='someUniqueId' showLog='false' width='1024px' height='768px' border='0'>
+			<scene>
+				<Viewpoint id='vpp' DEF='vp' centerOfRotation="0 0 0" position="0 0 30" orientation="0 0 0 0" zNear="0.01" zFar="1000"></Viewpoint> 
+				<background DEF='WO_World' groundColor='0.057 0.221 0.4' skyColor='0.057 0.221 0.4'></background>
+				
+				<group id="trees">
+				
+				</group>
+				
+				<transform DEF='rot'>	
+				<transform translation="0 10 2">
+				<group id='completecar'>
+				<transform translation="0 0 0" scale="3 1.5 0.5">
+					<group DEF='car'>
+						<shape>
+							<appearance>
+								<material DEF='MA_Material' ambientIntensity='0.333' shininess='0.098' specularColor='0.401 0.401 0.401'></material>
+							</appearance>
+							<box></box>
+						</shape>
+					</group>
+				</transform>
+				<transform translation="2.0 1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height"0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				<transform translation="-2.0 1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height"0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				<transform translation="2.0 -1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height"0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				<transform translation="-2.0 -1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height="0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				
+				</transform>
+				</group>
+				
+				</transform>
+				</transform>
+				
+				<transform translation="0 0 0" scale="1 1 1" >
+					<shape>
+						<appearance>
+							<material emissiveColor='1 1 0' diffuseColor="red"/>
+						</appearance>
+						<!--<box></box>-->
+						<!-- Note that index=0 for the first and last points are the same (coincident) in order to close the loop. -->
+						<!-- Compare to no indexing scheme in LineSet.x3d example, which creates the exact same path. -->
+						<IndexedLineSet DEF='ILS' coordIndex='0 1 2 3 4 5 6 7 8'>
+							<Coordinate DEF='TurnPoints' point='10 -10 1
+																-10 10 1
+																10 10 1
+																0 20 1
+																-10 10 1
+																-10 -10 1
+																10 -10 1
+																10 10 1
+																-10 -10 1 '/>
+						</IndexedLineSet>
+					</shape>
+				</transform> 
+				
+				<transform scale='125 125 0'>
+					<shape>
+						<appearance>
+							<imageTexture url='ground.png'></imageTexture>
+						</appearance>
+						<Plane ccw='true' center='0,0,0' lit='false' metadata='X3DMetadataObject' 
+						       primType='['TRIANGLES']' size='2,2' solid='true' subdivision='1,1' 
+							   useGeoCache='true' ></Plane> 
+						</IndexedLineSet>
+					</shape>
+				</transform>
+
+				<transform translation="-10 0 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				
+				<transform translation="20 -10 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+				<transform rotation="0 1 0 1.7">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				</transform>
+				
+				<transform translation="-33 12 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+				<transform rotation="0 1 0 2.7">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				</transform>
+				
+				<transform translation="45 30 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+				<transform rotation="0 1 0 0.7">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				</transform>
+
+				
+				<!-- Timer -->
+				<TimeSensor id="timesensor" DEF="TS" loop="true" cycleInterval="10" enable="true" ></TimeSensor>
+
+				<!-- Smooth rotation interpolation for the tree -->
+				<!-- <OrientationInterpolator DEF="OI" key="0 0.5 1" keyValue="0 -1 0 0, 0 -1 0 3.14159, 0 -1 0 6.28318" ></OrientationInterpolator>-->
+				<OrientationInterpolator id="rotinter" DEF="OI" key="0 0.5 1" keyValue="0 0 1 0, 0 0 1 3.14159, 0 0 1 6.28318" ></OrientationInterpolator>
+				<ROUTE fromNode='TS' fromField='fraction_changed' toNode='OI' toField='set_fraction'></ROUTE>
+				<ROUTE fromNode='OI' fromField='value_changed' toNode='rot' toField='set_rotation'/></ROUTE>
+				
+				<script type="text/javascript">
+				document.onload = function(){
+					createForest();
+					document.getElementById('completecar').addEventListener('click', function(){
+						document.getElementById('timesensor').setAttribute('loop', 'false');
+					}, false)};
+					
+				function createCylinder(xPos, yPos){
+					var group = document.getElementById('trees');
+					var transCy = document.createElement('transform');
+					transCy.setAttribute('id', 'transCy');
+					
+					var finTrans = xPos + ' ' + yPos + ' 2.5';
+					transCy.setAttribute('translation', finTrans );
+					transCy.setAttribute('scale', '1 5 1');
+					transCy.setAttribute('rotation', '1 0 0 1.57');
+					
+					var shapeCy = document.createElement('shape');
+					
+					var appearCy = document.createElement('appearance');
+
+					var matCy = document.createElement('material');
+					matCy.setAttribute('diffuseColor', 'brown');
+					
+					var cylinder = document.createElement('cylinder');
+					cylinder.setAttribute('radius', '0.5');
+					cylinder.setAttribute('height', '1.0');
+					
+					group.appendChild(transCy);
+					transCy.appendChild(shapeCy);
+					shapeCy.appendChild(appearCy);
+					appearCy.appendChild(matCy);
+					shapeCy.appendChild(cylinder);
+				}
+				
+				function createCone(xPos, yPos, scaleX, scaleY){
+					var group = document.getElementById('trees');
+					var transCo = document.createElement('transform');
+					transCo.setAttribute('id', 'transCo');
+					
+					var finTrans = xPos + ' ' + yPos + ' 6.0';
+					transCo.setAttribute('translation', finTrans);
+					var finScale = scaleX + ' ' + scaleY + ' ' + scaleX;
+					transCo.setAttribute('scale', finScale);   // 2 4 2
+					transCo.setAttribute('rotation', '1 0 0 1.57');
+					
+					var shapeCo = document.createElement('shape');
+					
+					var appearCo = document.createElement('appearance');
+
+					var matCo = document.createElement('material');
+					matCo.setAttribute('diffuseColor', 'green');
+					
+					var cone = document.createElement('cone');
+					
+					group.appendChild(transCo);
+					transCo.appendChild(shapeCo);
+					shapeCo.appendChild(appearCo);
+					appearCo.appendChild(matCo);
+					shapeCo.appendChild(cone);
+				}
+					
+
+				
+				
+				function createForest(){
+					var i, xPos, yPos, scaleX, scaleY;
+					var count = 100;
+					var range = 200;
+					var offset = range / 2;
+
+					for(i = 0; i < count; i++)
+					{
+						xPos = Math.floor((Math.random() * range) + 1) - offset;
+						yPos = Math.floor((Math.random() * range) + 1) - offset;
+						
+						scaleX = Math.floor((Math.random() * 4) + 2);
+						scaleY = Math.floor((Math.random() * 5) + 1);
+						
+						if(i % 2 == 0){
+							xPos *= (-1);
+							yPos *= (-1);
+						}
+						
+						createCylinder(xPos, yPos);
+						createCone(xPos, yPos, scaleX, scaleY);
+					}
+				}
+				</script>
+			</scene>
+		</x3d>
+		
+		<!--p1 		= new Point(offset.x + size, offset.y + size),
+		p2		= new Point(offset.x - size, offset.y - size),
+		p3 		= new Point(offset.x + size, offset.y - size),
+		p4 		= new Point(offset.x, offset.y - (size * 2)),
+		p5 		= new Point(p2.x, p2.y),
+		p6 		= new Point(offset.x - size , offset.y + size),
+		p7 		= new Point(p1.x, p1.y),
+		p8 		= new Point(p3.x, p3.y),
+		p9 		= new Point(p6.x, p6.y)-->
+	</body>
+</html>
