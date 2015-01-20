@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
+    <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+    <title>ParticleSet</title>
+    <style>
+        input {
+            width: 100px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<x3d width="800px" height="600px" id="x3d">
+    <scene>
+        <Background backUrl='"realsky_BK.jpg"' bottomUrl='"realsky_DN.jpg"' 
+                    frontUrl='"realsky_FR.jpg"' leftUrl='"realsky_LF.jpg"' 
+                    rightUrl='"realsky_RT.jpg"' topUrl='"realsky_UP.jpg"'>
+        </Background>
+        <Transform translation="-3 -1 -1" scale="0.2 0.2 0.2">
+            <Inline url='"tie.x3d"'></Inline>
+        </Transform>
+        
+        <Transform id="trans">
+            <Shape id="shape">
+                <Appearance>
+                    <Material diffuseColor="0 1 0.2"></Material>
+                    <DepthMode readOnly='true'></DepthMode>
+                </Appearance>
+                <ParticleSet id="ps" drawOrder='backToFront' size="1 1 1, 1 1 1, 1 1 1">
+                    <Coordinate id="pos" point='0 0 0, 1 1 1, 2 2 2'></Coordinate>
+                    <Color id="col" color='1 1 0, 1 1 0, 1 1 0'></Color>
+                </ParticleSet>
+            </Shape>
+        </Transform>
+    </scene>
+</x3d>
+
+<div>
+    <br><input type="button" value="Change Particles" onclick="changeParticles();">
+    <br><input type="button" value="Animate Particles" onclick="startAnim();">
+</div>
+
+<script type="text/javascript">
+    function changeParticles()
+    {
+        //manipulate position values
+        var coordDOMNode  = document.getElementById("pos");
+        
+        var coordinateObj = coordDOMNode.requestFieldRef("point");
+        coordinateObj.length = 4;   // resize array
+        
+        coordinateObj[0] = new x3dom.fields.SFVec3f(0, 1, 1);
+        coordinateObj[1] = new x3dom.fields.SFVec3f(2, 2, 2);
+        coordinateObj[2] = new x3dom.fields.SFVec3f(3, 2, 2);
+        coordinateObj[3] = new x3dom.fields.SFVec3f(-1, -1, -1);
+        
+        coordDOMNode.releaseFieldRef("point");
+    
+    
+        //manipulate particle size values
+        var particleSetDOMNode = document.getElementById("ps");
+        
+        var sizeObj = particleSetDOMNode.requestFieldRef("size");
+        sizeObj.length = 4;   // resize array
+        
+        sizeObj[0] = new x3dom.fields.SFVec3f(3, 3, 3);
+        sizeObj[1] = new x3dom.fields.SFVec3f(2, 2, 2);
+        sizeObj[2] = new x3dom.fields.SFVec3f(0.5, 0.5, 0.5);
+        sizeObj[3] = new x3dom.fields.SFVec3f(1, 1, 1);
+        
+        particleSetDOMNode.releaseFieldRef("size");
+        
+        
+        //manipulate color values
+        var colorDOMNode = document.getElementById("col");   
+        
+        var colorObj = colorDOMNode.requestFieldRef("color");
+        colorObj.length = 4;   // resize array
+        
+        colorObj[0] = new x3dom.fields.SFColor(0, 1, 0);
+        colorObj[1] = new x3dom.fields.SFColor(0, 0, 1);
+        colorObj[2] = new x3dom.fields.SFColor(1, 0, 0);
+        colorObj[3] = new x3dom.fields.SFColor(1, 1, 1);
+        
+        colorDOMNode.releaseFieldRef("color");
+    }
+    
+    
+    var lastTimestamp = 0;
+    
+    function startAnim() 
+    {
+        lastTimestamp = performance.now();
+        
+        changeParticles();
+        animateParticles(lastTimestamp);
+    }
+    
+    function animateParticles(timestamp) 
+    {
+        var vx, vy, vz;
+        var i;
+        
+        var dT = (timestamp - lastTimestamp) / 1000;
+        lastTimestamp = timestamp;
+        
+        // manipulate position values over time (fake velocity added to position)
+        var coordDOMNode  = document.getElementById("pos");
+        
+        var coordinateObj = coordDOMNode.requestFieldRef("point");
+        
+        for (i=0; i<4; i++) {
+            vx = Math.random() * 2 - 1;
+            vy = Math.random() * 2 - 1;
+            vz = Math.random() * 2 - 1;
+
+            coordinateObj[i].x += vx * dT;
+            coordinateObj[i].y += vy * dT;
+            coordinateObj[i].z += vz * dT;
+        }
+        
+        coordDOMNode.releaseFieldRef("point");
+        
+        // https://developer.mozilla.org/en-US/docs/Web/API/window.requestAnimationFrame
+        requestAnimationFrame(animateParticles);
+    }
+</script>
+
+</body>
+</html>
