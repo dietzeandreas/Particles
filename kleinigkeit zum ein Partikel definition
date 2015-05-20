@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>    
+     <link type="text/css" rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
+     <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+    
+     <title>Partikel</title>
+    
+     
+        
+    </head>
+    <body>
+        
+        
+        
+        <script type="text/javascript">
+
+        
+        
+        
+        
+     var Particle = function (beshleunigung, geschwindigkeit)
+       {
+        this._beshleunigung=beshleunigung;
+        this._geschwindigkeit=geschwindigkeit;
+        position=l.get(1);
+        lifespan=255.0;
+     };
+        
+     
+     function  run () {
+          display();
+     }
+     
+     function display ()
+     {
+     stroke(255,lifespan);
+     fill(255,lifespan);
+     ellipse(position.x,position.y,8,8);
+     }
+     
+        
+         </script>
+
+       <button type="button" onclick="run()">sdfasdf</button>
+       <br><input type="button" value="Animate Particles" onclick="run();">
+       
+       
+       
+      <canvas id="myCanvas" width="800" height="600" style="border:1px solid #000000;">
+          </canvas>
+          
+      <x3d width="800px" height="600px" id="x3d">
+          <scene>
+              
+              <Shape id="shape">
+              <ParticleSet id="ps" drawOrder='backToFront' size="1 1 1, 1 1 1, 1 1 1">
+                    <Coordinate id="pos" point='0 0 0, 1 1 1, 2 2 2'></Coordinate>
+                    <Color id="col" color='1 1 0, 1 1 0, 1 1 0'></Color>
+                </ParticleSet>
+              </Shape>
+              
+          </scene>
+          
+          
+
+       </x3d>
+       
+       
+        
+        
+        
+        
+        
+        
+        
+    </body>
+</html>
