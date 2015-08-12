@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Action Painting</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
+    <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+    <title>ActionPainting</title>
+    <style>
+        input {
+            width: 100px;
+            margin: 10px;
+        }
+       
+    </style>
+    </head>
+    <body>
+        <h1>Action Painting</h1>
+    
+    <div>
+        <br><input type="button" value="Spraydose" onclick="sprayDose();">
+        <br><input type="button" value="Pinsel" onclick="pinsel();">
+        <br><input type="button" value="Farbeimer" onclick="farbEimer();">
+        <br><input type="button" value="Farbbombe" onclick="farbBombe();">
+    </div>
+    <div>
+        <p>Farbauswahl:</p>
+        <input type="button" onclick="blau();">
+        <input type="button" onclick="gruen();">
+        <input type="button" onclick="gelb();">
+        <input type="button" onclick="rot();">
+    </div>
+    <script type="text/javascript">
+        /* function sprayDose()
+         {
+             
+         }
+         
+         //function pinsel()
+         {
+             
+         }
+         
+         function farbEimer()
+         {
+             
+         }
+         
+         function farbBombe()
+         {
+             
+         }*/
+    </script> 
+     <x3d width="1024" height="512">
+            <scene>
+                
+                <transform scale="10 0.01 10">
+                    <shape>
+                        <appearance>
+                            <ImageTexture url='bottom.jpg'>
+                                <TextureProperties generateMipMaps='true' magnificationFilter='linear' minificationFilter='linear'></TextureProperties>
+                            </ImageTexture>
+                        </appearance>
+                        <box></box>
+                    </shape>
+                </transform>
+                
+                <transform id="leinwand">
+                    
+                    <transform id="stHinten" translation="0 3.5 -2.6">
+                        <transform rotation="1 0 0 0.3926991">
+                            <transform scale="0.2 3.9 0.2">
+                                <shape>
+                                    <appearance>
+                                        <material diffuseColor="#A94700">
+
+                                        </material>
+                                    </appearance>
+                                    <box></box>
+                                </shape>                            
+                            </transform>
+                        </transform>
+                    </transform>
+
+                    <transform id="lwGestell" translation="0 3.2 0">
+                        
+                        <transform rotation="1 0 0 -0.2617994">
+                            <transform id="stRechts" rotation="0 0 1 0.3490659">
+                                <transform translation="1.5 0 0">
+                                    <transform scale="0.2 4 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>                            
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="stLinks" rotation="0 0 1 -0.3490659">
+                                <transform translation="-1.5 0 0">
+                                    <transform scale="0.2 4 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="stVerbund" rotation="0 0 1 1.5707963">
+                                <transform translation="1 0 0">
+                                    <transform scale="0.2 1.4 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="lwAblage" translation="0 -0.3 0.4">
+                                <transform rotation="0 0 1 1.5707963">
+                                    <transform scale="0.1 1.8 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="lw" rotation="0 0 0 1.5707963">
+                                <transform translation="0 2.5 0.3">
+                                    <transform scale="2 2.7 0.1">
+                                        <shape>
+                                            <appearance>
+                                                <ImageTexture url='lw.jpg'>
+                                                    <TextureProperties generateMipMaps='true' magnificationFilter='linear' minificationFilter='linear'></TextureProperties>
+                                                </ImageTexture>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+                        </transform>
+                        
+                    </transform>
+                    
+                </transform>
+                
+                
+                                
+            </scene>
+        </x3d>
+    </body>
+</html>
