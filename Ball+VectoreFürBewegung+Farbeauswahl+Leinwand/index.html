@@ -50,6 +50,7 @@
                                         </material>
                                     </appearance>
                                     <box></box>
+                                   
                                 </shape>                            
                             </transform>
                         </transform>
@@ -121,7 +122,7 @@
                             <transform id="lw" rotation="0 0 0 1.5707963">
                                 <transform translation="0 2.5 0.3">
                                     <transform scale="2 2.7 0.1">
-                                        <shape>
+                                        <shape onclick="getRayCollisionPoint(event)">
                                             <appearance>
                                                 <ImageTexture url='lw.jpg'>
                                                     <TextureProperties generateMipMaps='true' magnificationFilter='linear' minificationFilter='linear'></TextureProperties>
@@ -185,13 +186,18 @@
         <input id="color" type=color>
 
         <br><br>
-        <h1> <p>Action:</p></h1>
+        <h1>Action:</h1>
         <input type="button" value="new Ball" onClick="newBall();">
         <input type="button" value="set Color" onclick="sColor();">
         <input type="button" value="Start" onClick="start();">
         <input type="button" value="Reset" onclick="reset();">
    
     <script type="text/javascript">
+            setInterval(update, 20);
+             var collisionPoint;
+             var spherePosition=new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+             var isFlying=0;
+             
         function newBall(){
             var ball = document.getElementById('ball');
             var id = "ballfarbe";
@@ -200,13 +206,14 @@
             var ap = document.createElement('appearance');
             var mat = document.createElement('material');
             var sphere = document.createElement('sphere');
-            
+         
             ball.appendChild(sh);
             sh.appendChild(ap);
             ap.appendChild(mat);
             mat.setAttribute('id', id);
             mat.setAttribute('diffuseColor', color);
             sh.appendChild(sphere);
+            
             
             
             
@@ -226,7 +233,7 @@
          
           function start()
          {
-             
+             isFlying=1;
          }
          
          function reset()
@@ -237,11 +244,78 @@
                  ball.removeChild(ball.firstChild);
          }
          
+         function getRayCollisionPoint(event)
+         {
+             // cpa -> collisionPointArray
+             var cpa=event.hitPnt;//hältx,y,z Koordinaten als array
+             console.log(cpa);
+             collisionPoint=new x3dom.fields.SFVec3f(cpa[0], cpa[1], cpa[2]);
+             console.log(collisionPoint);
+          }
+          
+          function computeFlightDirection()
+          {
+              var flightDirection= new x3dom.fields.SFVec3f(0.0, 0.0, 0.0);
+              flightDirection= collisionPoint.subtract(spherePosition);
+              console.log(flightDirection);
+              flightDirection.normalize();
+              console.log(flightDirection);
+              return flightDirection;
+              
+          }
+         /* 1. Punkt auf Leinwand ermitteln
+          * 2. Flugbahn ist ausgerechnet
+          * 3. Ausgerechnete Flugbahn(*Geschwindigkeit) auf Kugelposition aufaddieren
+          */
+          
+          function shootBall()
+          {
+              var flightDirection=computeFlightDirection();
+              /*
+               * 1. Flugbahn zurückgegeben
+               * 2. Position der Kugel holen
+               * 3. Ausgerechnete Flugbahn(*Geschwindigkeit) auf Kugelposition aufaddieren
+               */
+              //spherePosition=spherePosition.add(flightDirection*0.5);
+              spherePosition.x += flightDirection.x * 0.5;
+              spherePosition.y += flightDirection.y * 0.5;
+              spherePosition.z += flightDirection.z * 0.5;
+              
+              var ball=document.getElementById("ball");
+              var finalePosition = spherePosition.x + ' ' 
+                                 + spherePosition.y + ' ' 
+                                 + spherePosition.z;
+              ball.setAttribute("translation", finalePosition);
+           
+             //console.log(ball.getAttribute("transform"));
+              
+              
+          }
+          
+          function update()
+          {
+              if (isFlying==1)
+              {
+                  shootBall();
+                  colorizeLw();
+              }
+             
+          }
+         function colorizeLw()
+         {
+             //var sP=document.getElementById("ball");
+             if (spherePosition.z<= 0.3)
+             {
+                 reset();
+             }
+         }
     </script> 
     </td>
     
   </tr>
 </table>
+        
+        
         
        
      
