@@ -138,6 +138,10 @@
                     
                 </transform>
                 
+                <transform id="ball"
+                           translation="0 5.5 8">
+                </transform>
+                
                 
                                 
             </scene>
@@ -146,33 +150,61 @@
       
         <td> 
             <h1>Farbauswahl:</h1>
-        <input type=color>
+        <input id="color" type=color>
 
         <br><br>
         <h1> <p>Action:</p></h1>
-        <input type="button" value="Start" onclick="sprayDose();">
-        <input type="button" value="Reset" onclick="pinsel();">
+        <input type="button" value="new Ball" onClick="newBall();">
+        <input type="button" value="set Color" onclick="sColor();">
+        <input type="button" value="Start" onClick="start();">
+        <input type="button" value="Reset" onclick="reset();">
    
     <script type="text/javascript">
-        /* function sprayDose()
+        function newBall(){
+            var ball = document.getElementById('ball');
+            var id = "ballfarbe";
+            var color = "#FFFFFF";
+            var sh = document.createElement('shape');
+            var ap = document.createElement('appearance');
+            var mat = document.createElement('material');
+            var sphere = document.createElement('sphere');
+            
+            ball.appendChild(sh);
+            sh.appendChild(ap);
+            ap.appendChild(mat);
+            mat.setAttribute('id', id);
+            mat.setAttribute('diffuseColor', color);
+            sh.appendChild(sphere);
+            
+            
+            
+        }
+        
+         function sColor()
+         {  
+            var ballfarbe = document.getElementById('ballfarbe');
+             
+            if(ballfarbe !== null){
+               var bcolor = document.getElementById('color').value;
+                
+               ballfarbe.setAttribute("diffuseColor",bcolor);
+            } else
+               alert("Es existiert kein Ball");
+         }
+         
+          function start()
          {
              
          }
          
-         //function pinsel()
+         function reset()
          {
+             var ball = document.getElementById('ball');
              
+             while(ball.hasChildNodes())
+                 ball.removeChild(ball.firstChild);
          }
          
-         function farbEimer()
-         {
-             
-         }
-         
-         function farbBombe()
-         {
-             
-         }*/
     </script> 
     </td>
     
