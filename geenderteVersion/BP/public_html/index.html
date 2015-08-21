@@ -3,30 +3,28 @@
 <html>
     <head>
         <title>Action Painting</title>
-        
+
         <link type="text/css" rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
-    <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
-   
-    <style type="text/css">
-/*        input {
-            width: 100px;
-            margin: 10px;
-        }
-       */   
-      
-    </style>
+        <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+
+        <style type="text/css">
+            /*        input {
+                        width: 100px;
+                        margin: 10px;
+                    }
+            */   
+
+        </style>
     </head>
     <body>
-        <center><h1>Action Painting</h1></center>
+    <center><h1>Action Painting</h1></center>
 
-    
-        
-        <table>
-  <tr>
-      
-      <td><x3d width="1024" height="512">
+    <table>
+        <tr>
+
+            <td><x3d width="1024" height="512">
             <scene>
-                
+
                 <transform scale="10 0.01 10">
                     <shape>
                         <appearance>
@@ -37,9 +35,9 @@
                         <box></box>
                     </shape>
                 </transform>
-                
+
                 <transform id="leinwand">
-                    
+
                     <transform id="stHinten" translation="0 3.5 -2.6">
                         <transform rotation="1 0 0 0.3926991">
                             <transform scale="0.2 3.9 0.2">
@@ -56,7 +54,7 @@
                     </transform>
 
                     <transform id="lwGestell" translation="0 3.2 0">
-                        
+
                         <transform rotation="1 0 0 -0.2617994">
                             <transform id="stRechts" rotation="0 0 1 0.3490659">
                                 <transform translation="1.5 0 0">
@@ -133,87 +131,106 @@
                                 </transform>
                             </transform>
                         </transform>
-                        
+
                     </transform>
-                    
+
                 </transform>
-                
+
                 <transform id="ball"
                            translation="0 5.5 8">
                 </transform>
-                
-                
-                                
+
+                <timeSensor id="time" cycleInterval="2" loop="true" enable='false'></timeSensor>
+                <PositionInterpolator id="move" key="0 0.25 0.5 0.75 1.0" keyValue="0 5.5 8  0 6.4 6  0 7.0 4  0 6.4 2 0 5.5 0"></PositionInterpolator>
+                <Route fromNode="time" fromField ="fraction_changed" toNode="move" toField="set_fraction"></Route>
+                <Route fromNode="move" fromField ="value_changed" toNode="ball" toField="translation"></Route>
+
+
             </scene>
         </x3d></td>
-      
-      
-        <td> 
-            <h1>Farbauswahl:</h1>
+
+
+    <td> 
+        <h1>Farbauswahl:</h1>
         <input id="color" type=color>
 
         <br><br>
         <h1> <p>Action:</p></h1>
         <input type="button" value="new Ball" onClick="newBall();">
-        <input type="button" value="set Color" onclick="sColor();">
+        <input type="button" value="set Color" onclick="sColor();"><br>
         <input type="button" value="Start" onClick="start();">
         <input type="button" value="Reset" onclick="reset();">
-   
-    <script type="text/javascript">
-        function newBall(){
-            var ball = document.getElementById('ball');
-            var id = "ballfarbe";
-            var color = "#FFFFFF";
-            var sh = document.createElement('shape');
-            var ap = document.createElement('appearance');
-            var mat = document.createElement('material');
-            var sphere = document.createElement('sphere');
-            
-            ball.appendChild(sh);
-            sh.appendChild(ap);
-            ap.appendChild(mat);
-            mat.setAttribute('id', id);
-            mat.setAttribute('diffuseColor', color);
-            sh.appendChild(sphere);
-            
-            
-            
-        }
-        
-         function sColor()
-         {  
-            var ballfarbe = document.getElementById('ballfarbe');
-             
-            if(ballfarbe !== null){
-               var bcolor = document.getElementById('color').value;
+
+        <script type="text/javascript">
+            function newBall() {
                 
-               ballfarbe.setAttribute("diffuseColor",bcolor);
-            } else
-               alert("Es existiert kein Ball");
-         }
-         
-          function start()
-         {
-             
-         }
-         
-         function reset()
-         {
-             var ball = document.getElementById('ball');
-             
-             while(ball.hasChildNodes())
-                 ball.removeChild(ball.firstChild);
-         }
-         
-    </script> 
+                if(!existBall()){
+                    var ball = document.getElementById('ball');
+                    var id = "ballfarbe";
+                    var color = "#FFFFFF";
+                    var sh = document.createElement('shape');
+                    var ap = document.createElement('appearance');
+                    var mat = document.createElement('material');
+                    var sphere = document.createElement('sphere');
+
+                    ball.appendChild(sh);
+                    sh.appendChild(ap);
+                    ap.appendChild(mat);
+                    mat.setAttribute('id', id);
+                    mat.setAttribute('diffuseColor', color);
+                    sh.appendChild(sphere);
+                } else
+                    alert("Es existiert bereits ein Ball");
+                
+            }
+
+            function sColor()
+            {
+                var ballfarbe = document.getElementById('ballfarbe');
+
+                if (existBall()) {
+                    var bcolor = document.getElementById('color').value;
+
+                    ballfarbe.setAttribute("diffuseColor", bcolor);
+                } else
+                    alert("Es existiert kein Ball");
+            }
+
+            function start (){
+            if(document.getElementById("time").getAttribute("enabled") === "false"){
+                document.getElementById("time").setAttribute("enabled", "true");              
+            }
+            else {
+                document.getElementById("time").setAttribute("enabled", "false");
+            }
+        }
+
+            function reset()
+            {
+                var ball = document.getElementById('ball');
+
+                while (ball.hasChildNodes())
+                    ball.removeChild(ball.firstChild);
+            }
+            
+            function existBall(){
+                var ballfarbe = document.getElementById('ballfarbe');
+                
+                if (ballfarbe !== null) {
+                    return true;
+                } else
+                    return false;
+            }
+
+        </script>
     </td>
-    
-  </tr>
+
+</tr>
 </table>
-        
-       
-     
-       
-    
-    </body>
+
+
+
+
+
+</body>
 </html>
