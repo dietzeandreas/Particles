@@ -1,0 +1,28 @@
+http://www.x3dom.org/examples/ - hier sind gute Beispiele für x3d!
+
+Und wenn wir das in Projekt haben - sehen wir ein Strahl (also ein Vector von Ball bis unserem Leinwand, entlang Vector kann das Ball sich bewegen)
+
+.......
+<transform id="ball"
+                           translation="0 5.5 8">
+                    <shape radius='0.9'/>
+                        <appearance>
+                            <material id="ballfarbe" diffuseColor="#A94700">
+
+                            </material>
+                        </appearance>
+                        <sphere></sphere>
+                    </shape>
+                </transform>
+         
+     
+     <Shape id='Path'>
+					<Appearance>
+						<Material emissiveColor='0.3 0.3 0.8'/>
+					</Appearance>
+					<IndexedLineSet coordIndex='0 1 -1'>
+						<Coordinate point='0 5.5 8 0 6 0'/>
+					</IndexedLineSet>
+				</Shape>
+				
+				........
