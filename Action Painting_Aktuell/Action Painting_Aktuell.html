@@ -2,22 +2,22 @@
 
 <html>
     <head>
-        <title>Action Painting</title>
+        <title>Aktionsmalerei</title>
         
         <link type="text/css" rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
     <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
    
     <style type="text/css">
-/*        input {
+        input {
             width: 100px;
             margin: 10px;
         }
-       */   
+          
       
     </style>
     </head>
     <body>
-        <center><h1>Action Painting</h1></center>
+        <center><h1>Aktionsmalerei</h1></center>
 
     
         
@@ -25,8 +25,8 @@
   <tr>
       <td><x3d width="1024" height="1024">
 			<scene>
-				<!--Einstellen des Blickwinkels  -->
-				<Viewpoint DEF='pos20' fieldOfView='2' position="2 10 15" orientation=" 0  0 1 0" ></Viewpoint>
+				<!--Einstellen des Blickwinkels-->
+				<Viewpoint DEF='pos20' fieldOfView='2' position="4 8 15" orientation=" 0  0 1 0" ></Viewpoint>
                 
                 <transform scale="10 0.01 10">
                     <shape>
@@ -176,7 +176,7 @@
 						<Coordinate point='0 5.5 8 1.5 8 0 0 0 0'/>
 					</IndexedLineSet>
 				</Shape>
-                
+              
                                 
             </scene>
         </x3d></td>
@@ -187,23 +187,30 @@
         <input id="color" type=color>
 
         <br><br>
-		<span id="meldung">Bitte erst Ziel auf der Leinwand setzen<span>
-        <h1>Action:</h1>
-        <input id="k1" type="button" value="new Ball" onClick="newBall();">
-        <input id="k2" type="button" value="set Color" onclick="sColor();">
+		<span id="meldung">°°°°°° °°°°°° °°°°°° °°°°°° °°°°°° °°°°°° °°°°°° <span>
+        <h1>Aktion:</h1>
+        <input id="k1" type="button" value="neuer Ball" onClick="newBall();">
+        <input id="k2" type="button" value="setze Farbe" onclick="sColor();">
         <input id="k3" type="button" value="Start" onClick="start();">
-        <input id="k4" type="button" value="Reset" onclick="Anhalten();">
+        <input id="k4" type="button" value="zurücksetzen" onclick="Anhalten();">
+        <br><br>
+                <span id="meldung">° Bitte erst Ziel auf der Leinwand setzen<span><br><br>
+                <span id="meldung">° Wählen und setzen Sie Ihre gewünschte Farbe<span><br><br>
+                <span id="meldung">° Klicken Sie auf den Start-Button<span><br><br>
+                <span id="meldung">° Wenn gewünscht können Sie den Zurücksetz-Button klicken<span><br><br>
+                <br><br>
+                <span id="meldung">Ihr Bachelor-Projekt-Team wünscht Ihnen dabei viel Vergnügen!<span>
    
     <script type="text/javascript">
 //-------------------------------------------------------------------
-//Globale V ariablen
+//Globale Variablen:
 		var ball = document.getElementById('ball');
 		var isFlying;
 		var bcolor = "#ffffff";
 		//falls der Aufprallpunkt nicht eingegeben wird
 		var collisionPoint= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
 		var collision_z_Point
-//		var spherePosition=new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+                //var spherePosition= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
 		var spherePosition
 		document.getElementById('k1').disabled = true;
 		document.getElementById('k2').disabled = true;
@@ -274,7 +281,7 @@
 		//Flug stoppen
 		clearInterval(isFlying);
 
- 		//sphere lÃ¶schen
+ 		//sphere loeschen
 		while(ball.hasChildNodes())
 			ball.removeChild(ball.firstChild);
          }
@@ -286,7 +293,7 @@
 		 document.getElementById('k3').disabled = false;
 		 document.getElementById('k4').disabled = false;
           // cpa -> collisionPointArray
-            var cpa=event.hitPnt;//hÃ¤ltx,y,z Koordinaten als array
+            var cpa=event.hitPnt;//haelt x,y,z Koordinaten als Array
 			
 		
              console.log(cpa);
@@ -314,7 +321,7 @@
 		//Position der Kugel holen
 		var flightDirection=computeFlightDirection();
 
-		  // Erste Aktion
+                        //Erste Aktion
 			spherePosition.x += flightDirection.x * 0.1;
 			spherePosition.y += flightDirection.y * 0.1;
 			spherePosition.z += flightDirection.z * 0.1;
@@ -325,7 +332,7 @@
 						 + spherePosition.z;
 	  ball.setAttribute("translation", aktPosition);
 
-	//console.log(ball.getAttribute("translation"));
+          //console.log(ball.getAttribute("translation"));
 	  
 	  
 	}
@@ -333,7 +340,7 @@
 //-------------------------------------------------------------------
 	function BallAktion2()
 	{
-	//Denk dir selbs ne Aktion aus
+	//Denk dir selbst eine Aktion aus:-)
 	spherePosition.y = spherePosition.y + 0.2;
 	console.log(spherePosition.y);
 	var aktPosition = spherePosition.x + ' ' 
@@ -360,7 +367,7 @@
 					break;
 			case 3:
 					Anhalten();
-					  //colorizeLw();
+					//colorizeLw();
 					break;
 			}
 		 
