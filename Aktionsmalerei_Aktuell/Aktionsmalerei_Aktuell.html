@@ -16,7 +16,7 @@
       
     </style>
     </head>
-    <body>
+    <body background="kleks_c.png" text="#919103" link="#0000CC" vlink="#000066" alink="#000000">
         <center><h1>Aktionsmalerei</h1></center>
 
     
@@ -26,9 +26,9 @@
       <td><x3d width="1024" height="1024">
 			<scene>
 				<!--Einstellen des Blickwinkels-->
-				<Viewpoint DEF='pos20' fieldOfView='2' position="4 8 15" orientation=" 0  0 1 0" ></Viewpoint>
+				<Viewpoint DEF='pos20' fieldOfView='1.5' position="2 3 15" orientation=" 0  0 1 0" ></Viewpoint>
                 
-                <transform scale="10 0.01 10">
+                <transform scale="10 0.01 15">
                     <shape>
                         <appearance>
                             <ImageTexture url='bottom.jpg'>
@@ -183,18 +183,20 @@
       
       
         <td> 
-            <h1>Farbauswahl:</h1>
+            <h2>Farbauswahl:</h2>
         <input id="color" type=color>
 
         <br><br>
 		<span id="meldung">°°°°°° °°°°°° °°°°°° °°°°°° °°°°°° °°°°°° °°°°°° <span>
-        <h1>Aktion:</h1>
+        <h2>Aktion:</h2>
         <input id="k1" type="button" value="neuer Ball" onClick="newBall();">
         <input id="k2" type="button" value="setze Farbe" onclick="sColor();">
         <input id="k3" type="button" value="Start" onClick="start();">
         <input id="k4" type="button" value="zurücksetzen" onclick="Anhalten();">
         <br><br>
                 <span id="meldung">° Bitte erst Ziel auf der Leinwand setzen<span><br><br>
+                <span id="meldung">° Für/ Ab 2. Ballwurf den Button "neuer Ball" klicken<span><br><br>
+                <br><br>       
                 <span id="meldung">° Wählen und setzen Sie Ihre gewünschte Farbe<span><br><br>
                 <span id="meldung">° Klicken Sie auf den Start-Button<span><br><br>
                 <span id="meldung">° Wenn gewünscht können Sie den Zurücksetz-Button klicken<span><br><br>
