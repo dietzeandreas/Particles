@@ -16,7 +16,10 @@
       
     </style>
     </head>
-    <body background="kleks_c.png" text="#919103" link="#0000CC" vlink="#000066" alink="#000000">
+    <body> // background="kleks_c.png" text="#919103" link="#0000CC" vlink="#000066" alink="#000000">
+        <br></br>
+          //  ->> PARTIKELSYSTEM wird noch fertiggestellt & hochgeladen!
+          
         <center><h1>Aktionsmalerei</h1></center>
 
     
@@ -267,10 +270,10 @@
 //-------------------------------------------------------------------
 		function start()
 		{
-		//Neuer Ball freigeben Start sperren 
+		//Neuer Ball freigeben ->Start sperren 
 			document.getElementById('k1').disabled = false;
 			document.getElementById('k3').disabled = true;
-		//die updateseq. starten 
+		//die updateseq.starten 
 			isFlying=setInterval(update, 50);
 			AktionNR = 1;
 
