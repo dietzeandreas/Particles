@@ -1,0 +1,44 @@
+//BSP.1
+
+<ParticleSet logFeature='' optimizationMode='auto' cacheMode='auto' normalUpdateMode='nice' multiResolutionLevel='1' invalidateVolume='FALSE' resolution='1' lit='TRUE' textureZ='' index='' size='' drawOrder='Any' mode='ViewDirQuads' />
+
+
+ParticleSet {
+	logFeature [""]
+	optimizationMode ["auto"]
+	cacheMode "auto"
+	normalUpdateMode "nice"
+	multiResolutionLevel 1
+	invalidateVolume FALSE
+	resolution 1
+	lit TRUE
+	textureZ []
+	index []
+	size []
+	drawOrder "Any"
+	mode "ViewDirQuads"
+}
+
+---------------------------------
+
+<ParticleSystem createParticles='' enabled='' lifetimeVariation='0.25' maxParticles='200' particleLifetime='5' particleSize='0.02 0.02' colorKey='NULL' geometryType='QUAD' texCoordKey='[]' bboxCenter='0 0 0' bboxSize='-1 -1 -1' render='TRUE' showBBox='FALSE' logFeature='' />
+
+
+ParticleSystem {
+	createParticles 
+	enabled 
+	lifetimeVariation 0.25
+	maxParticles 200
+	particleLifetime 5
+	particleSize 0.02 0.02
+	colorKey [NULL]
+	geometryType "QUAD"
+	texCoordKey [[]]
+	bboxCenter 0 0 0
+	bboxSize -1 -1 -1
+	render TRUE
+	showBBox FALSE
+	logFeature [""]
+}
+
+---------------------------------
