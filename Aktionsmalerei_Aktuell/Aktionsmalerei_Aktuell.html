@@ -37,6 +37,10 @@
                                 <TextureProperties generateMipMaps='true' magnificationFilter='linear' minificationFilter='linear'></TextureProperties>
                             </ImageTexture>
                         </appearance>
+                         <ParticleSet id="ps" drawOrder='backToFront' size="1 1 1, 1 1 1, 1 1 1">
+                    <Coordinate id="pos" point='0 0 0, 0 0 0, 0 0 0'></Coordinate>
+                    <Color id="col" color='1 1 0, 1 0 0, 0 1 0'></Color>
+                </ParticleSet>
                         <box></box>
                     </shape>
                 </transform>
@@ -357,7 +361,8 @@
  //-------------------------------------------------------------------
  
  // -> Ab hier fangen die Partikele an
- var camera, tick = 0,
+ // (-> Array erstellen mit push Funktion..)
+ /*var camera, tick = 0,
       scene, renderer, clock = new x3d.Clock(true),
       controls, container, gui = new dat.GUI(),
       options, spawnerOptions, particleSystem;
@@ -472,7 +477,7 @@
 
       renderer.render(scene, camera);
 
-    }
+    }*/
    </script> 
     </td>
     
