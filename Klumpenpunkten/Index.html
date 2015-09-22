@@ -143,7 +143,7 @@
 
         <inline url="Raum.x3d"></inline>
                 
-                <transform scale="10 0.01 15">
+                <transform id="partikelSystem" scale="10 0.01 15">
                     <shape>
                         <appearance>
                             <Material diffuseColor="0 0 0.2"></Material>
@@ -156,7 +156,7 @@
                     </shape>
                 </transform> 
                                 
-                <transform id="ball"
+<!--                <transform id="ball"
                            translation="0 5.5 8">
                 </transform>
                 
@@ -165,7 +165,7 @@
                 <transform id="particels" 
                            translation="0 5.5 8">
                     
-                </transform>
+                </transform>-->
                                 
                 <timeSensor id="tS" loop="true" cycleInterval="2" enabled='true'>
                 </timeSensor>
@@ -197,6 +197,7 @@
         <input id="k3" type="button" value="Start" onClick="start();">
         <input id="k4" type="button" value="zuruecksetzen" onclick="Anhalten();">
         <input id="k5" type="button" value="Animate Particles" onclick="moveParticles();">
+        <input id="k6" type="button" value="wegklatschen" onclick="shotParticles();">
         <br><br>
                 <span id="meldung">Bitte erst Ziel auf der Leinwand setzen<span><br><br>
                 <span id="meldung2">Fuer/ Ab 2. Ballwurf den Button "neuer Ball" klicken<span><br><br>
@@ -211,7 +212,7 @@
 //-------------------------------------------------------------------
 //Globale Variablen:
 		var ball = document.getElementById('ball');
-                //var particel = document.getElementById('particels');
+                var particel = document.getElementById('partikelSystem');
 		var bcolor;
 		//falls der Aufprallpunkt nicht eingegeben wird
 		var collisionPoint= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
@@ -225,13 +226,14 @@
 		//newBall();
 		document.getElementById('k3').disabled = true;
 		var AktionNR;
-                var pAnzahl = 4;
+                var pAnzahl = 1000;
                 var size = 3;
                 var posX = 1;
                 var schritt = true;
                 var r;
                 var g;
                 var b;
+                var flightDirections = new Array ([pAnzahl]);
  //-------------------------------------------------------------------
                 function newBall(){
 		//Start freigeben 
@@ -332,42 +334,64 @@
 			
 		
              console.log(cpa);
-             collisionPoint=new x3dom.fields.SFVec3f(cpa[0], cpa[1], cpa[2]);
+             collisionPoint = new x3dom.fields.SFVec3f(cpa[0], cpa[1], cpa[2]);
              console.log(collisionPoint);
 			 collision_z_Point = Math.abs(cpa[2]);
 			 console.log(collision_z_Point);
           }
           
 //-------------------------------------------------------------------
+        function partikelPosition (index){
+            var coordDOMNode  = document.getElementById("pos");
+            var coordinateObj = coordDOMNode.requestFieldRef("point");
+            
+            console.log(coordinateObj[index]);
+            return coordinateObj[index];
+        }
+//-------------------------------------------------------------------
           function computeFlightDirection()
           {
-              var flightDirection= new x3dom.fields.SFVec3f(0.0, 0.0, 0.0);
-              flightDirection= collisionPoint.subtract(spherePosition);
-              console.log(flightDirection);
+              var flightDirection = new x3dom.fields.SFVec3f(0.0, 0.0, 0.0);
+              //Abspeichern aller Positionen
+              for (var i = 0; i < pAnzahl; i++){
+                  console.log("++++");
+                  flightDirection = collisionPoint.subtract(partikelPosition(i));
+                  flightDirections[i] = flightDirection;
+                  console.log(flightDirection);
+              }
+              
               //flightDirection.normalize();
               //console.log(flightDirection);
-              return flightDirection;
+              //return flightDirection;
               
           }
            
 //-------------------------------------------------------------------
 	function BallAktion1()
 	{
-		//Position der Kugel holen
-		var flightDirection=computeFlightDirection();
-
-                        //Erste Aktion
-			spherePosition.x += flightDirection.x * 0.1;
-			spherePosition.y += flightDirection.y * 0.1;
-			spherePosition.z += flightDirection.z * 0.1;
-
-	  //var ball=document.getElementById("ball");
-	  var aktPosition = spherePosition.x + ' ' 
-						 + spherePosition.y + ' ' 
-						 + spherePosition.z;
-	  particel.setAttribute("translation", aktPosition);
-
-          //console.log(ball.getAttribute("translation"));
+            
+            for (var i = 0; i <pAnzahl; i++){
+                
+                //Position des aktuellen Pertikel holen
+                var position = partikelPosition(i);
+                
+                //flightDirection von Partikel holen
+                console.log("---");
+                var flightDirection = flightDirections[i];
+                
+                //Erste Aktion
+                position.x += flightDirection.x * 0.1;
+                position.y += flightDirection.y * 0.1;
+                position.z += flightDirection.z * 0.1;
+                
+                 //neue Position abspeichern
+                var coordDOMNode  = document.getElementById("pos");
+                var coordinateObj = coordDOMNode.requestFieldRef("point");
+		
+                coordinateObj[i].x = position.x;
+                coordinateObj[i].y = position.y;
+                coordinateObj[i].z = position.z;
+            }
 	}
 
 //-------------------------------------------------------------------
@@ -394,7 +418,7 @@
 					if (spherePosition.z<= collision_z_Point){AktionNR = 2;}
 					break;
 			case 2:
-					BallAktion2();
+					//BallAktion2();
 					//Weiterschaltbedingung
 					if (spherePosition.y>= 2){AktionNR = 3;}
 					break;
@@ -456,10 +480,9 @@
  */
 //--------------------------------------------------------------------
         // Partikelsche
-        pAnzahl += 1000;
         
         function addParticle(){
-            for(var i = 0; i < pAnzahl; i++){
+            for(var i = 0; i < (pAnzahl-3); i++){
                 var px = -0.35 + (Math.random()/2.5);   //Breite
                 var py = 950 + (Math.random()*250); //Hoehe
                 var pz = 0.5 + (Math.random()/5);   //Tiefe
@@ -486,49 +509,52 @@
     }
 		
 		console.log("ElementSize: " + size);
-                moveParticles();
+                //moveParticles();
 	}
-        
-    function moveParticles() 
-    {
-        lastTimestamp = performance.now();
-        
-        animateParticles(lastTimestamp);
-    }
-    
-    function animateParticles(timestamp) 
-    {
-        var vx, vy, vz;
-        var i;
-        
-        var dT = (timestamp - lastTimestamp) / 10000;
-        lastTimestamp = timestamp;
-        
-        // manipulate position values over time (fake velocity added to position)
-        var coordDOMNode  = document.getElementById("pos");
-        
-        var coordinateObj = coordDOMNode.requestFieldRef("point");
-        
-        for (i=0; i<pAnzahl; i++) {
-            vx = Math.random() * 1.2 - 1;   //Breite
-            vy = Math.random() * 120 - 100;   //Hoehe
-            vz = Math.random() * 1.2 - 1;   //Tiefe
+//---------------------------------------------------------------------
 
-            if (schritt){
-               coordinateObj[i].x += vx * dT;
-               coordinateObj[i].y += vy * dT;
-               coordinateObj[i].z += vz * dT;
-            } else {
-               coordinateObj[i].x -= vx * dT;
-               coordinateObj[i].y -= vy * dT;
-               coordinateObj[i].z -= vz * dT;
-            }
-            
-        }
-        schritt = !schritt;
-        coordDOMNode.releaseFieldRef("point");
-        requestAnimationFrame(animateParticles);
-    }
+//    function moveParticles() 
+//    {
+//        lastTimestamp = performance.now();
+//        
+//        animateParticles(lastTimestamp);
+//    }
+//    
+//    function animateParticles(timestamp) 
+//    {
+//        var vx, vy, vz;
+//        var i;
+//        
+//        var dT = (timestamp - lastTimestamp) / 10000;
+//        lastTimestamp = timestamp;
+//        
+//        // manipulate position values over time (fake velocity added to position)
+//        var coordDOMNode  = document.getElementById("pos");
+//        
+//        var coordinateObj = coordDOMNode.requestFieldRef("point");
+//        
+//        for (i=0; i<pAnzahl; i++) {
+//            vx = Math.random() * 1.2 - 1;   //Breite
+//            vy = Math.random() * 120 - 100;   //Hoehe
+//            vz = Math.random() * 1.2 - 1;   //Tiefe
+//
+//            if (schritt){
+//               coordinateObj[i].x += vx * dT;
+//               coordinateObj[i].y += vy * dT;
+//               coordinateObj[i].z += vz * dT;
+//            } else {
+//               coordinateObj[i].x -= vx * dT;
+//               coordinateObj[i].y -= vy * dT;
+//               coordinateObj[i].z -= vz * dT;
+//            }
+//            
+//        }
+//        schritt = !schritt;
+//        coordDOMNode.releaseFieldRef("point");
+//        requestAnimationFrame(animateParticles);
+//    }
+//    
+
  //---------------------------------------------------------------------       
                  /* -> funktioniert nicht bzw. Buttons kann man net mehr anklicken!!
                  // Closure call
