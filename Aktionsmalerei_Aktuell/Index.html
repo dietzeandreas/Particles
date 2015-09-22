@@ -168,7 +168,7 @@
                                 
                 <timeSensor id="tS" loop="true" cycleInterval="2" enabled='true'>
                 </timeSensor>
-<!--                <orientationInterpolator id="oI" key="0.0 0.5 1.0" keyValue="0 1 0 0 , 0 1 0 3.14 , 0 1 0 6.28">
+                <!--<orientationInterpolator id="oI" key="0.0 0.5 1.0" keyValue="0 1 0 0 , 0 1 0 3.14 , 0 1 0 6.28">
                 </orientationInterpolator>
                 <ROUTE fromNode='tS' fromField='fraction_changed' toNode='oI' toField='set_fraction'>
                 </ROUTE>
@@ -230,34 +230,33 @@
 		//Flug stoppen
 		isFlying=clearInterval(update);
 //--------------------------------------------------------------------
-//               particels();
+/*               particels();
 
-//		var id = "ballfarbe";
-//		//var color = "#808080";
-//		var sh = document.createElement('shape');
-//		var ap = document.createElement('appearance');
-//		var mat = document.createElement('material');
-//		var sphere = document.createElement('sphere');
-//
-//		//sphere erstellen
-//		ball.appendChild(sh);
-//		sh.appendChild(ap);
-//		ap.appendChild(mat);
-//		mat.setAttribute('id', id);
-//		mat.setAttribute('diffuseColor', bcolor);
-//		sh.appendChild(sphere);
+		var id = "ballfarbe";
+		//var color = "#808080";
+		var sh = document.createElement('shape');
+		var ap = document.createElement('appearance');
+		var mat = document.createElement('material');
+		var sphere = document.createElement('sphere');
+
+		//sphere erstellen
+		ball.appendChild(sh);
+		sh.appendChild(ap);
+		ap.appendChild(mat);
+		mat.setAttribute('id', id);
+		mat.setAttribute('diffuseColor', bcolor);
+		sh.appendChild(sphere);
 
 
                 //spherePosition=new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
                 //Startposition Kugel neu setzen
                 //particel.setAttribute("translation", spherePosition);
                 //ball.setAttribute("translation", 0.0, 5.5, 8.0);
-/*		spherePosition.x = 0;
+		spherePosition.x = 0;
 		spherePosition.y = 5.5;
 		spherePosition.z = 8.5
-*/
 		}
-       
+*/      
 //-------------------------------------------------------------------
          function sColor()
          {  
@@ -343,8 +342,6 @@
 	  particel.setAttribute("translation", aktPosition);
 
           //console.log(ball.getAttribute("translation"));
-	  
-	  
 	}
 
 //-------------------------------------------------------------------
@@ -395,8 +392,6 @@
          }
          
  //-------------------------------------------------------------------
- 
- 
  /*        function particels ()
         {
                 
@@ -434,7 +429,7 @@
         }
  */
 //--------------------------------------------------------------------
-     
+        // Partikelsche
 	var size = 3;
 	var posX = 1;
     
@@ -465,7 +460,125 @@
 		
 		console.log("ElementSize: " + size);
 	}
+ //---------------------------------------------------------------------       
+                 /* -> funktioniert nicht bzw. Buttons kann man net mehr anklicken!!
+                 // Closure call
+		(function mainLoop() {
         
+			if(updateParts)
+				moveParticle();
+			
+			// Renderloop 
+			window.requestAnimationFrame(mainLoop);
+		})();
+                
+                // Update
+                var updateParts = false;
+                
+	// Script Einstiegspunkt
+	function main(){
+		console.log("Script now is active!");
+     */
+//---------------------------------------------------------------------                
+                
+        function moveParticle(){
+                var coordDOMNode  = document.getElementById("pos");
+        
+                var coordinateObj = coordDOMNode.requestFieldRef("point");
+		coordinateObj[0].x += 0.1;
+		//console.log("ElementSize: " + size);
+		//console.log("ElementSize: " + coordinateObj[0].x );
+		coordDOMNode.releaseFieldRef("point");
+	}
+        
+        function changeParticles()
+        {
+        //manipulate position values
+        var coordDOMNode  = document.getElementById("pos");
+        
+        var coordinateObj = coordDOMNode.requestFieldRef("point");
+        coordinateObj.length = 5;   // resize array
+        
+        coordinateObj[0] = new x3dom.fields.SFVec3f(0, 1, 1);
+        coordinateObj[1] = new x3dom.fields.SFVec3f(2, 2, 2);
+        coordinateObj[2] = new x3dom.fields.SFVec3f(3, 2, 2);
+		coordinateObj[3] = new x3dom.fields.SFVec3f(-1, -1, -1);
+		coordinateObj[4] = new x3dom.fields.SFVec3f(-2, -2, -2);
+
+        
+        coordDOMNode.releaseFieldRef("point");
+    
+    
+        //manipulate particle size values
+        var particleSetDOMNode = document.getElementById("ps");
+        
+        var sizeObj = particleSetDOMNode.requestFieldRef("size");
+        sizeObj.length = 5;   // resize array
+        
+        sizeObj[0] = new x3dom.fields.SFVec3f(3, 3, 3);
+        sizeObj[1] = new x3dom.fields.SFVec3f(2, 2, 2);
+        sizeObj[2] = new x3dom.fields.SFVec3f(0.5, 0.5, 0.5);
+        sizeObj[3] = new x3dom.fields.SFVec3f(1, 1, 1);
+		sizeObj[4] = new x3dom.fields.SFVec3f(2, 2, 2);
+        
+        particleSetDOMNode.releaseFieldRef("size");
+        
+        
+        //manipulate color values
+        var colorDOMNode = document.getElementById("col");   
+        
+        var colorObj = colorDOMNode.requestFieldRef("color");
+        colorObj.length = 5;   // resize array
+        
+        colorObj[0] = new x3dom.fields.SFColor(0, 1, 0);
+        colorObj[1] = new x3dom.fields.SFColor(0, 0, 1);
+        colorObj[2] = new x3dom.fields.SFColor(1, 0, 0);
+        colorObj[3] = new x3dom.fields.SFColor(1, 1, 1);
+		colorObj[4] = new x3dom.fields.SFColor(1, 0, 1);
+        
+        colorDOMNode.releaseFieldRef("color");
+    }
+    
+    
+    var lastTimestamp = 0;
+    
+    function startAnim() 
+    {
+        lastTimestamp = performance.now();
+        
+        changeParticles();
+        animateParticles(lastTimestamp);
+    }
+    
+    function animateParticles(timestamp) 
+    {
+        var vx, vy, vz;
+        var i;
+        
+        var dT = (timestamp - lastTimestamp) / 1000;
+        lastTimestamp = timestamp;
+        
+        // manipulate position values over time (fake velocity added to position)
+        var coordDOMNode  = document.getElementById("pos");
+        
+        var coordinateObj = coordDOMNode.requestFieldRef("point");
+        
+        for (i=0; i<5; i++) {
+            vx = Math.random() * 2 - 1;
+            vy = Math.random() * 2 - 1;
+            vz = Math.random() * 2 - 1;
+
+            coordinateObj[i].x += vx * dT;
+            coordinateObj[i].y += vy * dT;
+            coordinateObj[i].z += vz * dT;
+        }
+		
+        
+        coordDOMNode.releaseFieldRef("point");
+        
+        // https://developer.mozilla.org/en-US/docs/Web/API/window.requestAnimationFrame
+        requestAnimationFrame(animateParticles);
+    }
         
    </script> 
     </td>
