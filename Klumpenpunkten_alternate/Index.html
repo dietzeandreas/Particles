@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Klumpenpunkten</title>
+        
+        <link type="text/css" rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
+    <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+   
+    <style type="text/css">
+        input {
+            width: 100px;
+            margin: 10px;
+        }
+          
+      
+    </style>
+    </head>
+    <body>
+        <br></br>
+        <center><h1>Klumpenpunkten</h1></center>
+
+        <table>
+  <tr>
+      <td><x3d width="1024" height="1024">
+			<scene>
+				<!--Einstellen des Blickwinkels-->
+				<Viewpoint DEF='pos20' fieldOfView='1.2' position="-1.4 10 10" orientation=" 0  0 1 0" ></Viewpoint>
+                
+        <inline url="Raum.x3d"></inline>
+                
+                <transform id="partikelSystem" scale="10 0.01 15">
+                    <shape>
+                        <appearance>
+                            <Material diffuseColor="0 0 0.2"></Material>
+                            <DepthMode readOnly="true"></DepthMode>
+                        </appearance>
+                        <ParticleSet id="ps" drawOrder ='backToFront' size="0.2 0.2 0.2, 1 1 1, 1 1 1, 1 1 1">
+                            <Coordinate id="pos" point='0 500 0.5, 1 400 0, 4 12 0, -1 5 -2'></Coordinate>
+                            <Color id="col" color='1 1 0, 1 0 0, 0 1 0, 0 0 1'></Color>
+                        </ParticleSet>
+                    </shape>
+                </transform> 
+                <timeSensor id="tS" loop="true" cycleInterval="2" enabled='true'>
+                </timeSensor>
+                <!--<orientationInterpolator id="oI" key="0.0 0.5 1.0" keyValue="0 1 0 0 , 0 1 0 3.14 , 0 1 0 6.28">
+                </orientationInterpolator>
+                <ROUTE fromNode='tS' fromField='fraction_changed' toNode='oI' toField='set_fraction'>
+                </ROUTE>
+                <ROUTE fromNode='oI' fromField='value_changed' toNode='particels' toField='set_rotation'>
+                </ROUTE>-->
+                                
+                <positionInterpolator id="pI" key="0.0 0.5 1.0" keyValue="0 5.5 8 0.02 5.52 7.98 0 5.5 8">
+                </positionInterpolator>
+                <ROUTE fromNode='tS' fromField='fraction_changed' toNode='pI' toField='set_fraction'>
+                </ROUTE>
+                <ROUTE fromNode='pI' fromField='value_changed' toNode='particels' toField='set_translation'>
+                </ROUTE>
+                                
+            </scene>
+        </x3d></td>
+        <td> 
+            <h2>Farbauswahl:</h2>
+        <input id="color" type=color>
+        <br><br>
+        <h2>Aktion:</h2>
+        <br>
+        <input id="k0" type="button" value="Partikel hinzufuegen" onClick="addParticle();">
+        <input id="k1" type="button" value="neuer Ball" onClick="newBall();">
+        <input id="k2" type="button" value="setze Farbe" onclick="sColor();">
+        <input id="k3" type="button" value="Start" onClick="start();">
+        <input id="k4" type="button" value="zuruecksetzen" onclick="Anhalten();">
+        <input id="k5" type="button" value="Animate Particles" onclick="moveParticles();">
+        <input id="k6" type="button" value="wegklatschen" onclick="shotParticles();">
+        <br><br>
+                <span id="meldung">Bitte erst Ziel auf der Leinwand setzen<span><br><br>
+                <span id="meldung2">Fuer/ Ab 2. Ballwurf den Button "neuer Ball" klicken<span><br><br>
+                <br><br>       
+                <span id="meldung3">Waehlen und setzen Sie Ihre gewuenschte Farbe<span><br><br>
+                <span id="meldung4">Klicken Sie auf den Start-Button<span><br><br>
+                <span id="meldung5">Wenn gewuenscht koennen Sie den Zuruecksetz-Button klicken<span><br><br>
+                <br><br>
+                <span id="meldung6">Ihr Bachelor-Projekt-Team wuenscht Ihnen dabei viel Vergnuegen!<span>
+   
+    <script type="text/javascript">
+//-------------------------------------------------------------------
+//Globale Variablen:
+		var ball = document.getElementById('ball');
+                var particel = document.getElementById('partikelSystem');
+		var bcolor;
+		//falls der Aufprallpunkt nicht eingegeben wird
+		var collisionPoint= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+		var collision_z_Point;
+                //var spherePosition= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+		var spherePosition;
+                document.getElementById('k0').disabled = true;
+		document.getElementById('k1').disabled = true;
+		document.getElementById('k2').disabled = true;
+		document.getElementById('k4').disabled = true;
+		//newBall();
+		document.getElementById('k3').disabled = true;
+		var AktionNR;
+                var pAnzahl = 1000;
+                var size = 3;
+                var posX = 1;
+                //var schritt = true;
+                var r;
+                var g;
+                var b;
+                var collisionPoint;
+ //-------------------------------------------------------------------
+                function newBall(){
+		//Start freigeben 
+		document.getElementById('k3').disabled = false;
+		//Flug stoppen
+		isFlying=clearInterval(update);
+            }
+
+//-------------------------------------------------------------------
+		function start()
+		{
+		//Neuer Ball freigeben ->Start sperren 
+                        document.getElementById('k0').disabled = true;
+			document.getElementById('k1').disabled = false;
+			document.getElementById('k3').disabled = true;
+		//die updateseq.starten 
+			isFlying=setInterval(update, 50);
+			AktionNR = 1;
+
+		}
+
+//-------------------------------------------------------------------
+         function Anhalten()
+         {
+		console.log("Anhalten");
+		//Flug stoppen
+		clearInterval(isFlying);
+
+ 		//sphere loeschen
+		while(particel.hasChildNodes())
+			particel.removeChild(particel.firstChild);
+         }
+         
+//-------------------------------------------------------------------
+         function getRayCollisionPoint(event)
+         {
+                 document.getElementById('k0').disabled = false;  
+		 document.getElementById('k2').disabled = false;
+		 document.getElementById('k3').disabled = false;
+		 document.getElementById('k4').disabled = false;
+          // cpa -> collisionPointArray
+            var cpa=event.hitPnt;//haelt x,y,z Koordinaten als Array
+            collisionPoint = cpa;
+			
+		
+             console.log(cpa);
+             collisionPoint = new x3dom.fields.SFVec3f(cpa[0], cpa[1], cpa[2]);
+             console.log(collisionPoint);
+			 collision_z_Point = Math.abs(cpa[2]);
+			 console.log(collision_z_Point);
+          }
+          
+          //-------------------------------------------------------------------
+	function BallAktion2()
+	{
+	//Denk dir selbst eine Aktion aus:-)
+	spherePosition.y = spherePosition.y + 0.2;
+	console.log(spherePosition.y);
+	var aktPosition = spherePosition.x + ' ' 
+					 + spherePosition.y + ' ' 
+					 + spherePosition.z;
+	particel.setAttribute("translation", aktPosition);	  
+	  
+	}
+
+//-------------------------------------------------------------------
+		function update()
+		//wird nur im Flug angesprochen
+		{
+			switch (AktionNR) {
+			case 1:
+					BallAktion1();
+					//Weiterschaltbedingung
+					if (spherePosition.z<= collision_z_Point){AktionNR = 2;}
+					break;
+			case 2:
+					BallAktion2();
+					//Weiterschaltbedingung
+					if (spherePosition.y>= 2){AktionNR = 3;}
+					break;
+			case 3:
+					Anhalten();
+					//colorizeLw();
+					break;
+			}
+		 
+		}
+                
+//--------------------------------------------------------------------
+        // Partikelsche
+        
+        function addParticle(){
+            for(var i = 0; i < pAnzahl; i++){
+                var px = -0.35 + (Math.random()/3.54);   //Breite
+                var py = 950 + (Math.random()*200); //Hoehe5
+                var pz = 0.5 + (Math.random()/6.14);   //Tiefe
+                    
+	    var coordDOMNode  = document.getElementById("pos");
+            var coordinateObj = coordDOMNode.requestFieldRef("point");
+		coordinateObj.length = ++size;
+		coordinateObj[size] = new x3dom.fields.SFVec3f(px, py, pz);
+		coordDOMNode.releaseFieldRef("point");
+	
+            var pSize = 0.08 + (Math.random()/5);
+            
+        var particleSetDOMNode = document.getElementById("ps");
+        var sizeObj = particleSetDOMNode.requestFieldRef("size");
+        sizeObj.length = coordinateObj.length;
+        sizeObj[size] = new x3dom.fields.SFVec3f(pSize, pSize, pSize);
+        particleSetDOMNode.releaseFieldRef("size");
+        
+        var colorDOMNode = document.getElementById("col");   
+        var colorObj = colorDOMNode.requestFieldRef("color");
+        colorObj.length = coordinateObj.length;  
+        colorObj[size] = new x3dom.fields.SFColor(1, 0, 0);
+        colorDOMNode.releaseFieldRef("color");
+    }
+		
+		console.log("ElementSize: " + size);
+	}
+        
+    function moveParticles() 
+    {
+        lastTimestamp = performance.now();
+        
+        animateParticles(lastTimestamp);
+    }
+    
+    function animateParticles(timestamp) 
+    {
+        var vx, vy, vz;
+        var i;
+        
+        var dT = (timestamp - lastTimestamp) / 1000;
+        lastTimestamp = timestamp;
+        
+        // manipulate position values over time (fake velocity added to position)
+        var coordDOMNode  = document.getElementById("pos");
+        
+        var coordinateObj = coordDOMNode.requestFieldRef("point");
+        
+        for (i=0; i < pAnzahl+4; i++) {
+            vx = 0;   //Breite
+            vy = 0;   //Hoehe
+            vz = Math.random() * 1.2 - 1;   //Tiefe
+
+            coordinateObj[i].x += vx * dT;
+            coordinateObj[i].y += vy * dT;
+            coordinateObj[i].z += vz * dT;
+        }
+        coordDOMNode.releaseFieldRef("point");
+        requestAnimationFrame(animateParticles);
+        
+        
+    }
+  
+   </script> 
+    </td>
+    
+  </tr>
+</table>
+    
+    </body>
+</html>
