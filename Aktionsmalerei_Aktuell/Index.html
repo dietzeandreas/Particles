@@ -43,11 +43,11 @@
                 <transform scale="10 0.01 15">
                     <shape>
                         <appearance>
-                            <Material diffuseColor="0 1 0.2"></Material>
+                            <Material diffuseColor="0 0 0.2"></Material>
                             <DepthMode readOnly="true"></DepthMode>
                         </appearance>
-                        <ParticleSet id="ps" drawOrder ='backToFront' size="1 1 1, 1 1 1, 1 1 1, 1 1 1">
-                            <Coordinate id="pos" point='0 5 0, 1 0 0, 4 5 0, -2 5 -2'></Coordinate>
+                        <ParticleSet id="ps" drawOrder ='backToFront' size="0.2 0.2 0.2, 1 1 1, 1 1 1, 1 1 1">
+                            <Coordinate id="pos" point='0 500 0.5, 1 400 0, 4 12 0, -1 5 -2'></Coordinate>
                             <Color id="col" color='1 1 0, 1 0 0, 0 1 0, 0 0 1'></Color>
                         </ParticleSet>
                     </shape>
@@ -184,28 +184,26 @@
                                 
             </scene>
         </x3d></td>
-      
-      
         <td> 
             <h2>Farbauswahl:</h2>
         <input id="color" type=color>
-
         <br><br>
-		<span id="meldung">������ ������ ������ ������ ������ ������ ������ <span>
         <h2>Aktion:</h2>
+        <br>
+        <input id="k0" type="button" value="Partikel hinzufuegen" onClick="addParticle();">
         <input id="k1" type="button" value="neuer Ball" onClick="newBall();">
         <input id="k2" type="button" value="setze Farbe" onclick="sColor();">
         <input id="k3" type="button" value="Start" onClick="start();">
-        <input id="k4" type="button" value="zur�cksetzen" onclick="Anhalten();">
+        <input id="k4" type="button" value="zuruecksetzen" onclick="Anhalten();">
         <br><br>
-                <span id="meldung">� Bitte erst Ziel auf der Leinwand setzen<span><br><br>
-                <span id="meldung">� Für/ Ab 2. Ballwurf den Button "neuer Ball" klicken<span><br><br>
+                <span id="meldung">Bitte erst Ziel auf der Leinwand setzen<span><br><br>
+                <span id="meldung">Fuer/ Ab 2. Ballwurf den Button "neuer Ball" klicken<span><br><br>
                 <br><br>       
-                <span id="meldung">� Wählen und setzen Sie Ihre gewünschte Farbe<span><br><br>
-                <span id="meldung">� Klicken Sie auf den Start-Button<span><br><br>
-                <span id="meldung">� Wenn gewünscht k�nnen Sie den Zurücksetz-Button klicken<span><br><br>
+                <span id="meldung">Waehlen und setzen Sie Ihre gewuenschte Farbe<span><br><br>
+                <span id="meldung">Klicken Sie auf den Start-Button<span><br><br>
+                <span id="meldung">Wenn gewuenscht koennen Sie den Zuruecksetz-Button klicken<span><br><br>
                 <br><br>
-                <span id="meldung">Ihr Bachelor-Projekt-Team wünscht Ihnen dabei viel Vergnügen!<span>
+                <span id="meldung">Ihr Bachelor-Projekt-Team wuenscht Ihnen dabei viel Vergnuegen!<span>
    
     <script type="text/javascript">
 //-------------------------------------------------------------------
@@ -218,6 +216,7 @@
 		var collision_z_Point;
                 //var spherePosition= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
 		var spherePosition;
+                document.getElementById('k0').disabled = true;
 		document.getElementById('k1').disabled = true;
 		document.getElementById('k2').disabled = true;
 		document.getElementById('k4').disabled = true;
@@ -225,13 +224,13 @@
 		document.getElementById('k3').disabled = true;
 		var AktionNR;
  //-------------------------------------------------------------------
-	function newBall(){
+                function newBall(){
 		//Start freigeben 
 		document.getElementById('k3').disabled = false;
 		//Flug stoppen
 		isFlying=clearInterval(update);
-
- //               particels();
+//--------------------------------------------------------------------
+//               particels();
 
 //		var id = "ballfarbe";
 //		//var color = "#808080";
@@ -248,10 +247,11 @@
 //		mat.setAttribute('diffuseColor', bcolor);
 //		sh.appendChild(sphere);
 
-		spherePosition=new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
-	  //Startposition Kugel neu setzen
-	  particel.setAttribute("translation", spherePosition);
-	  //ball.setAttribute("translation", 0.0, 5.5, 8.0);
+
+                //spherePosition=new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+                //Startposition Kugel neu setzen
+                //particel.setAttribute("translation", spherePosition);
+                //ball.setAttribute("translation", 0.0, 5.5, 8.0);
 /*		spherePosition.x = 0;
 		spherePosition.y = 5.5;
 		spherePosition.z = 8.5
@@ -274,6 +274,7 @@
 		function start()
 		{
 		//Neuer Ball freigeben ->Start sperren 
+                        document.getElementById('k0').disabled = true;
 			document.getElementById('k1').disabled = false;
 			document.getElementById('k3').disabled = true;
 		//die updateseq.starten 
@@ -297,6 +298,7 @@
 //-------------------------------------------------------------------
          function getRayCollisionPoint(event)
          {
+                 document.getElementById('k0').disabled = false;  
 		 document.getElementById('k2').disabled = false;
 		 document.getElementById('k3').disabled = false;
 		 document.getElementById('k4').disabled = false;
@@ -419,7 +421,7 @@
                     //partikel erstellen
                     particel.appendChild(partikel);
                     partikel.appendChild(sh);
-                    //Größe des Balls
+                    //GrÃ¶ÃŸe des Balls
                     partikel.setAttribute('scale', ''+size+' '+size+' '+size+'');
                     partikel.setAttribute('translation', ''+px+' '+py+' '+pz+'');
                     partikel.setAttribute('id', id);
@@ -431,10 +433,39 @@
                 }                
         }
  */
-
-        function addParticel (){
-            
-        }
+//--------------------------------------------------------------------
+     
+	var size = 3;
+	var posX = 1;
+    
+        function addParticle(){
+            for(var i = 0; i < 500; i++){
+                var px = 0 + (Math.random()/10);
+                    var py = 500 + (Math.random()/10);
+                    var pz = 0.5 + (Math.random()/10);
+                    
+	    var coordDOMNode  = document.getElementById("pos");
+            var coordinateObj = coordDOMNode.requestFieldRef("point");
+		coordinateObj.length = ++size;
+		coordinateObj[size] = new x3dom.fields.SFVec3f(px, py, pz);
+		coordDOMNode.releaseFieldRef("point");
+		
+        var particleSetDOMNode = document.getElementById("ps");
+        var sizeObj = particleSetDOMNode.requestFieldRef("size");
+        sizeObj.length = coordinateObj.length;
+        sizeObj[size] = new x3dom.fields.SFVec3f(0.2, 0.2, 0.2);
+        particleSetDOMNode.releaseFieldRef("size");
+        
+        var colorDOMNode = document.getElementById("col");   
+        var colorObj = colorDOMNode.requestFieldRef("color");
+        colorObj.length = coordinateObj.length;  
+        colorObj[size] = new x3dom.fields.SFColor(1, 0, 0);
+        colorDOMNode.releaseFieldRef("color");
+    }
+		
+		console.log("ElementSize: " + size);
+	}
+        
         
    </script> 
     </td>
