@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Klumpenpunkten</title>
+        
+        <link type="text/css" rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
+    <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+   
+    <style type="text/css">
+        input {
+            width: 100px;
+            margin: 10px;
+        }
+          
+      
+    </style>
+    </head>
+    <body>
+        <br></br>
+        <center><h1>Klumpenpunkten</h1></center>
+
+        <table>
+  <tr>
+      <td><x3d width="1024" height="1024">
+			<scene>
+				<!--Einstellen des Blickwinkels-->
+				<Viewpoint DEF='pos20' fieldOfView='1.5' position="2 3 15" orientation=" 0  0 1 0" ></Viewpoint>
+                
+                <transform scale="10 0.01 15">
+                    <shape>
+                        <appearance>
+                            <ImageTexture url='bottom.jpg'>
+                                <TextureProperties generateMipMaps='true' magnificationFilter='linear' minificationFilter='linear'></TextureProperties>
+                            </ImageTexture>
+                        </appearance>
+                        <box></box>
+                        
+                        
+                    </shape>
+                </transform>
+                                
+                <transform scale="10 0.01 15">
+                    <shape>
+                        <appearance>
+                            <Material diffuseColor="0 1 0.2"></Material>
+                            <DepthMode readOnly="true"></DepthMode>
+                        </appearance>
+                        <ParticleSet id="ps" drawOrder ='backToFront' size="1 1 1, 1 1 1, 1 1 1, 1 1 1">
+                            <Coordinate id="pos" point='0 5 0, 1 0 0, 4 5 0, -2 5 -2'></Coordinate>
+                            <Color id="col" color='1 1 0, 1 0 0, 0 1 0, 0 0 1'></Color>
+                        </ParticleSet>
+                    </shape>
+                </transform> 
+                             
+                
+                <transform id="leinwand">
+                    
+                    <transform id="stHinten" translation="0 3.5 -2.6">
+                        <transform rotation="1 0 0 0.3926991">
+                            <transform scale="0.2 3.9 0.2">
+                                <shape>
+                                    <appearance>
+                                        <material diffuseColor="#A94700">
+
+                                        </material>
+                                    </appearance>
+                                    <box></box>
+                                   
+                                </shape>                            
+                            </transform>
+                        </transform>
+                    </transform>
+
+                    <transform id="lwGestell" translation="0 3.2 0">
+                        
+                        <transform rotation="1 0 0 -0.2617994">
+                            <transform id="stRechts" rotation="0 0 1 0.3490659">
+                                <transform translation="1.5 0 0">
+                                    <transform scale="0.2 4 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>                            
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="stLinks" rotation="0 0 1 -0.3490659">
+                                <transform translation="-1.5 0 0">
+                                    <transform scale="0.2 4 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="stVerbund" rotation="0 0 1 1.5707963">
+                                <transform translation="1 0 0">
+                                    <transform scale="0.2 1.4 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="lwAblage" translation="0 -0.3 0.4">
+                                <transform rotation="0 0 1 1.5707963">
+                                    <transform scale="0.1 1.8 0.2">
+                                        <shape>
+                                            <appearance>
+                                                <material diffuseColor="#A94700">
+
+                                                </material>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+
+                            <transform id="lw" rotation="0 0 0 1.5707963">
+                                <transform translation="0 2.5 0.3">
+                                    <transform scale="2 2.7 0.1">
+                                        <shape onclick="getRayCollisionPoint(event)">
+                                            <appearance>
+                                                <ImageTexture url='lw.jpg'>
+                                                    <TextureProperties generateMipMaps='true' magnificationFilter='linear' minificationFilter='linear'></TextureProperties>
+                                                </ImageTexture>
+                                            </appearance>
+                                            <box></box>
+                                        </shape>
+                                    </transform>
+                                </transform>
+                            </transform>
+                        </transform>
+                        
+                    </transform>
+                    
+                </transform>
+                
+                <transform id="ball"
+                           translation="0 5.5 8">
+                </transform>
+                
+                                
+                
+                <transform id="particels" 
+                           translation="0 5.5 8">
+                    
+                </transform>
+                                
+                <timeSensor id="tS" loop="true" cycleInterval="2" enabled='true'>
+                </timeSensor>
+<!--                <orientationInterpolator id="oI" key="0.0 0.5 1.0" keyValue="0 1 0 0 , 0 1 0 3.14 , 0 1 0 6.28">
+                </orientationInterpolator>
+                <ROUTE fromNode='tS' fromField='fraction_changed' toNode='oI' toField='set_fraction'>
+                </ROUTE>
+                <ROUTE fromNode='oI' fromField='value_changed' toNode='particels' toField='set_rotation'>
+                </ROUTE>-->
+                                
+                <positionInterpolator id="pI" key="0.0 0.5 1.0" keyValue="0 5.5 8 0.02 5.52 7.98 0 5.5 8">
+                </positionInterpolator>
+                <ROUTE fromNode='tS' fromField='fraction_changed' toNode='pI' toField='set_fraction'>
+                </ROUTE>
+                <ROUTE fromNode='pI' fromField='value_changed' toNode='particels' toField='set_translation'>
+                </ROUTE>
+                                
+            </scene>
+        </x3d></td>
+      
+      
+        <td> 
+            <h2>Farbauswahl:</h2>
+        <input id="color" type=color>
+
+        <br><br>
+		<span id="meldung">������ ������ ������ ������ ������ ������ ������ <span>
+        <h2>Aktion:</h2>
+        <input id="k1" type="button" value="neuer Ball" onClick="newBall();">
+        <input id="k2" type="button" value="setze Farbe" onclick="sColor();">
+        <input id="k3" type="button" value="Start" onClick="start();">
+        <input id="k4" type="button" value="zur�cksetzen" onclick="Anhalten();">
+        <br><br>
+                <span id="meldung">� Bitte erst Ziel auf der Leinwand setzen<span><br><br>
+                <span id="meldung">� Für/ Ab 2. Ballwurf den Button "neuer Ball" klicken<span><br><br>
+                <br><br>       
+                <span id="meldung">� Wählen und setzen Sie Ihre gewünschte Farbe<span><br><br>
+                <span id="meldung">� Klicken Sie auf den Start-Button<span><br><br>
+                <span id="meldung">� Wenn gewünscht k�nnen Sie den Zurücksetz-Button klicken<span><br><br>
+                <br><br>
+                <span id="meldung">Ihr Bachelor-Projekt-Team wünscht Ihnen dabei viel Vergnügen!<span>
+   
+    <script type="text/javascript">
+//-------------------------------------------------------------------
+//Globale Variablen:
+		var ball = document.getElementById('ball');
+                var particel = document.getElementById('particels');
+		var bcolor = "#ffffff";
+		//falls der Aufprallpunkt nicht eingegeben wird
+		var collisionPoint= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+		var collision_z_Point;
+                //var spherePosition= new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+		var spherePosition;
+		document.getElementById('k1').disabled = true;
+		document.getElementById('k2').disabled = true;
+		document.getElementById('k4').disabled = true;
+		newBall();
+		document.getElementById('k3').disabled = true;
+		var AktionNR;
+ //-------------------------------------------------------------------
+	function newBall(){
+		//Start freigeben 
+		document.getElementById('k3').disabled = false;
+		//Flug stoppen
+		isFlying=clearInterval(update);
+
+ //               particels();
+
+//		var id = "ballfarbe";
+//		//var color = "#808080";
+//		var sh = document.createElement('shape');
+//		var ap = document.createElement('appearance');
+//		var mat = document.createElement('material');
+//		var sphere = document.createElement('sphere');
+//
+//		//sphere erstellen
+//		ball.appendChild(sh);
+//		sh.appendChild(ap);
+//		ap.appendChild(mat);
+//		mat.setAttribute('id', id);
+//		mat.setAttribute('diffuseColor', bcolor);
+//		sh.appendChild(sphere);
+
+		spherePosition=new x3dom.fields.SFVec3f(0.0, 5.5, 8.0);
+	  //Startposition Kugel neu setzen
+	  particel.setAttribute("translation", spherePosition);
+	  //ball.setAttribute("translation", 0.0, 5.5, 8.0);
+/*		spherePosition.x = 0;
+		spherePosition.y = 5.5;
+		spherePosition.z = 8.5
+*/
+		}
+       
+//-------------------------------------------------------------------
+         function sColor()
+         {  
+            if(ballfarbe !== null){
+               bcolor = document.getElementById('color').value;
+            // alert(bcolor);
+           
+               ballfarbe.setAttribute("diffuseColor",bcolor);
+            } else
+               alert("Es existiert kein Ball");
+         }
+         
+//-------------------------------------------------------------------
+		function start()
+		{
+		//Neuer Ball freigeben ->Start sperren 
+			document.getElementById('k1').disabled = false;
+			document.getElementById('k3').disabled = true;
+		//die updateseq.starten 
+			isFlying=setInterval(update, 50);
+			AktionNR = 1;
+
+		}
+
+//-------------------------------------------------------------------
+         function Anhalten()
+         {
+		console.log("Anhalten");
+		//Flug stoppen
+		clearInterval(isFlying);
+
+ 		//sphere loeschen
+		while(particel.hasChildNodes())
+			particel.removeChild(particel.firstChild);
+         }
+         
+//-------------------------------------------------------------------
+         function getRayCollisionPoint(event)
+         {
+		 document.getElementById('k2').disabled = false;
+		 document.getElementById('k3').disabled = false;
+		 document.getElementById('k4').disabled = false;
+          // cpa -> collisionPointArray
+            var cpa=event.hitPnt;//haelt x,y,z Koordinaten als Array
+			
+		
+             console.log(cpa);
+             collisionPoint=new x3dom.fields.SFVec3f(cpa[0], cpa[1], cpa[2]);
+             console.log(collisionPoint);
+			 collision_z_Point = Math.abs(cpa[2]);
+			 console.log(collision_z_Point);
+          }
+          
+//-------------------------------------------------------------------
+          function computeFlightDirection()
+          {
+              var flightDirection= new x3dom.fields.SFVec3f(0.0, 0.0, 0.0);
+              flightDirection= collisionPoint.subtract(spherePosition);
+              console.log(flightDirection);
+              //flightDirection.normalize();
+              //console.log(flightDirection);
+              return flightDirection;
+              
+          }
+           
+//-------------------------------------------------------------------
+	function BallAktion1()
+	{
+		//Position der Kugel holen
+		var flightDirection=computeFlightDirection();
+
+                        //Erste Aktion
+			spherePosition.x += flightDirection.x * 0.1;
+			spherePosition.y += flightDirection.y * 0.1;
+			spherePosition.z += flightDirection.z * 0.1;
+
+	  //var ball=document.getElementById("ball");
+	  var aktPosition = spherePosition.x + ' ' 
+						 + spherePosition.y + ' ' 
+						 + spherePosition.z;
+	  particel.setAttribute("translation", aktPosition);
+
+          //console.log(ball.getAttribute("translation"));
+	  
+	  
+	}
+
+//-------------------------------------------------------------------
+	function BallAktion2()
+	{
+	//Denk dir selbst eine Aktion aus:-)
+	spherePosition.y = spherePosition.y + 0.2;
+	console.log(spherePosition.y);
+	var aktPosition = spherePosition.x + ' ' 
+					 + spherePosition.y + ' ' 
+					 + spherePosition.z;
+	particel.setAttribute("translation", aktPosition);	  
+	  
+	}
+
+//-------------------------------------------------------------------
+		function update()
+		//wird nur im Flug angesprochen
+		{
+			switch (AktionNR) {
+			case 1:
+					BallAktion1();
+					//Weiterschaltbedingung
+					if (spherePosition.z<= collision_z_Point){AktionNR = 2;}
+					break;
+			case 2:
+					BallAktion2();
+					//Weiterschaltbedingung
+					if (spherePosition.y>= 2){AktionNR = 3;}
+					break;
+			case 3:
+					Anhalten();
+					//colorizeLw();
+					break;
+			}
+		 
+		}
+//-------------------------------------------------------------------
+         function colorizeLw()
+         {
+             //var sP=document.getElementById("ball");
+			 
+					if (spherePosition.z<= collision_z_Point)
+					{
+
+					Anhalten();
+					}
+         }
+         
+ //-------------------------------------------------------------------
+ 
+ 
+ /*        function particels ()
+        {
+                
+                var Anzahl = 500;
+                //var i = 1;
+                for (var i = 0; i<Anzahl; i++){
+                    //neue Position, pro Partikel unterschiedlich
+                    var px = 0 + (Math.random()/10);
+                    var py = 0 + (Math.random()/10);
+                    var pz = 0 + (Math.random()/10);
+                    
+                    var size = Math.random()/150;
+                    
+                    var partikel = document.createElement('transform');                                   
+                    var id = "particels"+i;
+                    //var color = "#808080";
+                    var sh = document.createElement('shape');
+                    var ap = document.createElement('appearance');
+                    var mat = document.createElement('material');
+                    var sphere = document.createElement('sphere');
+
+                    //partikel erstellen
+                    particel.appendChild(partikel);
+                    partikel.appendChild(sh);
+                    //Größe des Balls
+                    partikel.setAttribute('scale', ''+size+' '+size+' '+size+'');
+                    partikel.setAttribute('translation', ''+px+' '+py+' '+pz+'');
+                    partikel.setAttribute('id', id);
+                    sh.appendChild(ap);
+                    ap.appendChild(mat);
+                    //mat.setAttribute('id', id);
+                    mat.setAttribute('diffuseColor', '#FF00BF');
+                    sh.appendChild(sphere);  
+                }                
+        }
+ */
+
+        function addParticel (){
+            
+        }
+        
+   </script> 
+    </td>
+    
+  </tr>
+</table>
+        
+        
+        
+       
+     
+       
+    
+    </body>
+</html>
